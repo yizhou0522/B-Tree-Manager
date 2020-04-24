@@ -130,10 +130,7 @@ BTreeIndex::~BTreeIndex()
 
 const void BTreeIndex::insertEntry(const void *key, const RecordId rid) 
 {
-	// page pointer
-	Page * thePage
-	// read root
-	bufMgr->readPage();
+	insert(key, rootPageNum, rid);
 }
 
 
