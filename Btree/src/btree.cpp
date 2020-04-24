@@ -493,7 +493,15 @@ const void combineNonleaf(const PageID  pid1, const PageID pid2)
 		node2->parent = newParentID;
 		newNode->parent = newParentID;
 		if (n2Parent == -1)
+		{
 			newParent->parent = -1;
+			Page* metaPage;
+			bufMgr->readPage(file, headerPageNum, metaPage);
+			IndexMetaInfo* metaInfo = (IndexMetaInfo*)metaPage;
+			rootPageNum = newParentID;
+			metaInfo->rootPageNo = newParentID;
+			bufMgr->unPinPage(file, headerPageNum, false);			
+		}
 		else
 			combineNonleaf(newParentID, n2Parent);
 		
