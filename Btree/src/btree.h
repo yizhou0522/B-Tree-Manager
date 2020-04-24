@@ -321,7 +321,19 @@ class BTreeIndex {
    */
 	Operator	highOp;
 
-	
+	// FOR SCAN
+  struct IndexMetaInfo indexMetaInfo
+  {
+  };
+
+  void setPageIdForScan();
+  void setEntryIndexForScan();
+  void moveToNextPage();
+  void setNextEntry();
+  int findArrayIndex();
+  int findScanIndexLeaf();
+  bool isLeaf();
+  int findIndexNonLeaf();
  public:
 
   /**
