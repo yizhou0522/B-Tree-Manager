@@ -142,9 +142,24 @@ at this level are just above the leaf nodes. Otherwise set to 0.
 */
 struct NonLeafNodeInt{
   /**
+   * is leaf?
+   */
+	int isLeaf;
+
+  /**
    * Level of the node in the tree.
    */
 	int level;
+	
+  /**
+   * number of keys in the node.
+   */
+	int key_count;
+	
+  /**
+   * parent of the node.
+   */
+	PageID parent;
 
   /**
    * Stores keys.
@@ -162,6 +177,21 @@ struct NonLeafNodeInt{
  * @brief Structure for all leaf nodes when the key is of INTEGER type.
 */
 struct LeafNodeInt{
+  /**
+   * is leaf?
+   */
+	int isLeaf;
+
+  /**
+   * number of keys in the node.
+   */
+	int key_count;
+
+  /**
+   * parent of the node.
+   */
+	PageID parent;
+	
   /**
    * Stores keys.
    */
@@ -365,6 +395,11 @@ class BTreeIndex {
 	**/
 	const void endScan();
 	
+	
+	
+	const PageID insert(const void * key, const PageID pid, const RecordID rid);
+	const void leafSplitInsert(const void * key, const PageID pid, const RecordID rid);
+	const void combineNonleaf(const PageID  pid1, const PageID pid2);
 };
 
 }
