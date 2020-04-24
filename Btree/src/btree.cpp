@@ -500,7 +500,7 @@ const void combineNonleaf(const PageID  pid1, const PageID pid2)
 			IndexMetaInfo* metaInfo = (IndexMetaInfo*)metaPage;
 			rootPageNum = newParentID;
 			metaInfo->rootPageNo = newParentID;
-			bufMgr->unPinPage(file, headerPageNum, false);			
+			bufMgr->unPinPage(file, headerPageNum, true);			
 		}
 		else
 			combineNonleaf(newParentID, n2Parent);
