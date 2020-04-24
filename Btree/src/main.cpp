@@ -37,7 +37,7 @@
 using namespace badgerdb;
 
 // -----------------------------------------------------------------------------
-// Globals
+// Global variables
 // -----------------------------------------------------------------------------
 int testNum = 1;
 const std::string relationName = "relA";
@@ -74,13 +74,13 @@ void forwardCreateRelationInRange(int left, int right);
 void intTests();
 int intScan(BTreeIndex *index, int lowVal, Operator lowOp, int highVal, Operator highOp);
 void indexTests();
-void testType(int num);
-void testRelationSize10000();
-void testEmptyTree();
-void testNoSplit();
-void testHugeNum();
-void testRange();
-void testSplit();
+void  test_type(int num);
+void test_size_10000();
+void test_empty_tree();
+void test_no_split();
+void test_huge_num();
+void test_range();
+void test_split();
 void test1();
 void test2();
 void test3();
@@ -156,27 +156,25 @@ int main(int argc, char **argv)
 	File::remove(relationName);
 
 	test1();
-	std::cout << "Finish Test One" << std::endl;
+	//std::cout << "Finish Test One" << std::endl;
 	test2();
-	std::cout << "Finish Test Two" << std::endl;
+	//std::cout << "Finish Test Two" << std::endl;
 	test3();
-	std::cout << "Finish Test Three" << std::endl;
+	//std::cout << "Finish Test Three" << std::endl;
 	test4();
-	std::cout << "Finish Test Four" << std::endl;
+	//std::cout << "Finish Test Four" << std::endl;
 	test5();
-	std::cout << "Finish Test Five" << std::endl;
+	//std::cout << "Finish Test Five" << std::endl;
 	test6();
-	std::cout << "Finish Test Six" << std::endl;
-	//test7();
-	//std::cout << "Finish Test Seven" << std::endl;
+	//std::cout << "Finish Test Six" << std::endl;
 	test8();
-	std::cout << "Finish Test Eight" << std::endl;
+	//std::cout << "Finish Test Eight" << std::endl;
 	test9();
-	std::cout << "Finish Test Nine" << std::endl;
+	//std::cout << "Finish Test Nine" << std::endl;
 	test10();
-	std::cout << "Finish Test Ten" << std::endl;
+	//std::cout << "Finish Test Ten" << std::endl;
 	errorTests();
-	std::cout << "Finish Error Test" << std::endl;
+	//std::cout << "Finish Error Test" << std::endl;
 
   return 1;
 }
@@ -213,14 +211,14 @@ void test3()
 	indexTests();
 	deleteRelation();
 }
-// own designed test
+// ---------------------designed tests----------------------------------
 void test4()
 {
     // Create a relation with tuples valued 0 to the given number in random order
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for randomly inserting with given size"<< std::endl;
     randomlyCreateRelationInSize(10000);
-    testType(4);
+     test_type(4);
     deleteRelation();
 }
 
@@ -231,7 +229,7 @@ void test5()
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for empty tree" << std::endl;
     forwardCreateRelationInSize(0);
-    testType(5);
+     test_type(5);
     deleteRelation();
 }
 
@@ -242,7 +240,7 @@ void test6()
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for forward inserting with no split on root" << std::endl;
     forwardCreateRelationInSize(300);
-    testType(6);
+     test_type(6);
     deleteRelation();
 }
 
@@ -253,7 +251,7 @@ void test7()
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for huge data size" << std::endl;
     forwardCreateRelationInSize(1000000);
-    testType(7);
+     test_type(7);
     deleteRelation();
 }
 void test8()
@@ -263,7 +261,7 @@ void test8()
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for forward inserting with given range" << std::endl;
     forwardCreateRelationInRange(-500, 500);
-    testType(8);
+     test_type(8);
     deleteRelation();
 }
 void test9()
@@ -272,7 +270,7 @@ void test9()
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for backward inserting with given size" << std::endl;
     backwardCreateRelationInSize(300);
-    testType(6);
+     test_type(6);
     deleteRelation();
 }
 void test10()
@@ -282,10 +280,10 @@ void test10()
     std::cout << "--------------------" << std::endl;
     std::cout << "test the root split "<< std::endl;
     forwardCreateRelationInSize(683);
-    testType(9);
+     test_type(9);
     deleteRelation();
 }
-void testType(int num)
+void  test_type(int num)
 {
     if(testNum == 1)
     {
@@ -293,22 +291,22 @@ void testType(int num)
         switch (num)
         {
             case 4:
-                testRelationSize10000();
+                test_size_10000();
                 break;
             case 5:
-                testEmptyTree();
+                test_empty_tree();
                 break;
             case 6:
-                testNoSplit();
+                test_no_split();
                 break;
             case 7:
-                testHugeNum();
+                test_huge_num();
                 break;
             case 8:
-                testRange();
+                test_range();
                 break;
             case 9:
-                testSplit();
+                test_split();
                 break;
             default:
                 break;
@@ -324,10 +322,10 @@ void testType(int num)
 }
 
 
-void testRelationSize10000()
+void test_size_10000()
 {
     // Test for the given size 10000
-    std::cout << "----- testRelationSize10000 -----" << std::endl;
+    std::cout << "----- test_size_10000 -----" << std::endl;
     BTreeIndex index(relationName, intIndexName, bufMgr, offsetof(tuple,i), INTEGER);
 
     checkPassFail(intScan(&index,25,GT,40,LT), 14)
@@ -338,10 +336,10 @@ void testRelationSize10000()
     checkPassFail(intScan(&index,300,GT,400,LT), 99)
     checkPassFail(intScan(&index,3000,GTE,4000,LT), 1000)
 }
-void testEmptyTree()
+void test_empty_tree()
 {
     // Test for an empty tree
-    std::cout << "-------- testEmptyTree --------" << std::endl;
+    std::cout << "-------- test_empty_tree --------" << std::endl;
     BTreeIndex index(relationName, intIndexName, bufMgr, offsetof(tuple,i), INTEGER);
 
     checkPassFail(intScan(&index,25,GT,40,LT), 0)
@@ -352,10 +350,10 @@ void testEmptyTree()
     checkPassFail(intScan(&index,300,GT,400,LT), 0)
     checkPassFail(intScan(&index,3000,GTE,4000,LT), 0)
 }
-void testNoSplit()
+void test_no_split()
 {
     // Test for a small given size, for which the root will not split
-    std::cout << "---------- testNoSplit ---------" << std::endl;
+    std::cout << "---------- test_no_split ---------" << std::endl;
     BTreeIndex index(relationName, intIndexName, bufMgr, offsetof(tuple,i), INTEGER);
 
     checkPassFail(intScan(&index,25,GT,40,LT), 14)
@@ -366,7 +364,7 @@ void testNoSplit()
     checkPassFail(intScan(&index,300,GT,400,LT), 0)
     checkPassFail(intScan(&index,3000,GTE,4000,LT), 0)
 }
-void testHugeNum()
+void test_huge_num()
 {
     // Test for huge data
     std::cout << "---------- testHugeNum ---------- " << std::endl;
@@ -381,10 +379,10 @@ void testHugeNum()
     checkPassFail(intScan(&index,0,GTE, 1000000,LT), 1000000)
 }
 
-void testRange()
+void test_range()
 {
     // Test for given a range for creating relation
-    std::cout << "----------- testRange -----------" << std::endl;
+    std::cout << "----------- test_range -----------" << std::endl;
     BTreeIndex index(relationName, intIndexName, bufMgr, offsetof(tuple,i), INTEGER);
 
     checkPassFail(intScan(&index,25,GT,40,LT), 14)
@@ -395,10 +393,10 @@ void testRange()
     checkPassFail(intScan(&index,300,GT,400,LT), 99)
     checkPassFail(intScan(&index,-1,GTE,0,LT), 1)
 }
-void testSplit()
+void test_split()
 {
     // Test for the root just split
-    std::cout << "----------- testRange -----------" << std::endl;
+    std::cout << "----------- test_range -----------" << std::endl;
     BTreeIndex index(relationName, intIndexName, bufMgr, offsetof(tuple,i), INTEGER);
 
     checkPassFail(intScan(&index,430,GTE,432,LTE), 3)
@@ -423,7 +421,7 @@ void forwardCreateRelationInRange(int left, int right)
 
     file1 = new PageFile(relationName, true);
 
-    // initialize all of record1.s to keep purify happy
+     
     memset(record1.s, ' ', sizeof(record1.s));
     PageId new_page_number;
     Page new_page = file1->allocatePage(new_page_number);
@@ -471,7 +469,7 @@ void backwardCreateRelationInSize(int size)
     }
     file1 = new PageFile(relationName, true);
 
-    // initialize all of record1.s to keep purify happy
+     
     memset(record1.s, ' ', sizeof(record1.s));
     PageId new_page_number;
     Page new_page = file1->allocatePage(new_page_number);
@@ -521,7 +519,7 @@ void forwardCreateRelationInSize(int size)
 
     file1 = new PageFile(relationName, true);
 
-    // initialize all of record1.s to keep purify happy
+     
     memset(record1.s, ' ', sizeof(record1.s));
     PageId new_page_number;
     Page new_page = file1->allocatePage(new_page_number);
@@ -567,7 +565,7 @@ void randomlyCreateRelationInSize(int size)
     }
     file1 = new PageFile(relationName, true);
 
-    // initialize all of record1.s to keep purify happy
+     
     memset(record1.s, ' ', sizeof(record1.s));
     PageId new_page_number;
     Page new_page = file1->allocatePage(new_page_number);
@@ -635,7 +633,7 @@ void createRelationForward()
 
   file1 = new PageFile(relationName, true);
 
-  // initialize all of record1.s to keep purify happy
+   
   memset(record1.s, ' ', sizeof(record1.s));
 	PageId new_page_number;
   Page new_page = file1->allocatePage(new_page_number);
@@ -682,7 +680,7 @@ void createRelationBackward()
 	}
   file1 = new PageFile(relationName, true);
 
-  // initialize all of record1.s to keep purify happy
+   
   memset(record1.s, ' ', sizeof(record1.s));
 	PageId new_page_number;
   Page new_page = file1->allocatePage(new_page_number);
@@ -730,7 +728,7 @@ void createRelationRandom()
 	}
   file1 = new PageFile(relationName, true);
 
-  // initialize all of record1.s to keep purify happy
+   
   memset(record1.s, ' ', sizeof(record1.s));
 	PageId new_page_number;
   Page new_page = file1->allocatePage(new_page_number);
@@ -898,7 +896,7 @@ void errorTests()
 
   file1 = new PageFile(relationName, true);
 	
-  // initialize all of record1.s to keep purify happy
+   
   memset(record1.s, ' ', sizeof(record1.s));
 	PageId new_page_number;
   Page new_page = file1->allocatePage(new_page_number);
