@@ -66,7 +66,7 @@ BTreeIndex::BTreeIndex(const std::string &relationName,
 	catch (FileNotFoundException e)
 	{
 		file = new BlobFile(outIndexName, true);
-		Page * metaPage, * rootPage;
+		Page *metaPage, *rootPage;
 		bufMgr->allocPage(file, headerPageNum, metaPage);
 		bufMgr->allocPage(file, rootPageNum, rootPage);
 		IndexMetaInfo *metaInfo = (IndexMetaInfo *)metaPage;
@@ -609,7 +609,7 @@ const int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 	static auto comp = [](const PageId &p1, const PageId &p2) { return p1 > p2; };
 	PageId *start = node->pageNoArray;
 	PageId *end = &node->pageNoArray[INTARRAYNONLEAFSIZE + 1];
-	int len = lower_bound(start, end, 0, comp) - start;
+	int len = std::lower_bound(start, end, 0, comp) - start;
 	int result = findArrayIndex(node->keyArray, len - 1, key);
 	return result == -1 ? len - 1 : result;
 }
@@ -618,11 +618,11 @@ const int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 // -----------------------------------------------------------------------------
 
 const int BTreeIndex::findArrayIndex(const int *arr, int len, int key,
-							   bool includeKey)
+									 bool includeKey)
 {
 	if (!includeKey)
 		key++;
-	int result = lower_bound(arr, &arr[len], key) - arr;
+	int result = std::lower_bound(arr, &arr[len], key) - arr;
 	return result >= len ? -1 : result;
 }
 
@@ -632,7 +632,15 @@ const int BTreeIndex::findArrayIndex(const int *arr, int len, int key,
 
 const int BTreeIndex::findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey)
 {
-	return findArrayIndex(node->keyArray, getLeafLen(node), key, includeKey);
+	static auto comp = [](const RecordId &r1, const RecordId &r2) {
+		return r1.page_number > r2.page_number;
+	};
+	static RecordId emptyRecord{};
+
+	RecordId *start = node->ridArray;
+	RecordId *end = &node->ridArray[INTARRAYLEAFSIZE];
+	int temp = std::lower_bound(start, end, emptyRecord, comp) - start;
+	return findArrayIndex(node->keyArray, temp, key, includeKey);
 }
 // -----------------------------------------------------------------------------
 // BTreeIndex::setEntryIndexForScan
