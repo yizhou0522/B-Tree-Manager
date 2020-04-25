@@ -327,6 +327,20 @@ class BTreeIndex {
   };
 
 
+	void insert(const void * key, const PageId pid, const RecordId rid);
+	void leafSplitInsert(const void * key, const PageId pid, const RecordId rid);
+	void combineNonleaf(const PageId  pid1, const PageId pid2);
+	
+	void setPageIdForScan();
+	void setEntryIndexForScan();
+	void moveToNextPage(LeafNodeInt *node);
+	void setNextEntry();
+	int findArrayIndex(const int *arr, int len, int key, bool includeKey);
+	int findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey);
+	bool isLeaf(Page *page);
+	int findIndexNonLeaf(NonLeafNodeInt *node, int key);	
+
+
  public:
 
   /**
@@ -399,21 +413,6 @@ class BTreeIndex {
 	 * @throws ScanNotInitializedException If no scan has been initialized.
 	**/
 	const void endScan();
-	
-	
-	
-	const void insert(const void * key, const PageId pid, const RecordId rid);
-	const void leafSplitInsert(const void * key, const PageId pid, const RecordId rid);
-	const void combineNonleaf(const PageId  pid1, const PageId pid2);
-	
-	const void setPageIdForScan();
-	const void setEntryIndexForScan();
-	const void moveToNextPage(LeafNodeInt *node);
-	const void setNextEntry();
-	const int findArrayIndex(const int *arr, int len, int key, bool includeKey);
-	const int findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey);
-	const bool isLeaf(Page *page);
-	const int findIndexNonLeaf(NonLeafNodeInt *node, int key);
 };
 
 }

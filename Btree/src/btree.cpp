@@ -133,7 +133,7 @@ const void BTreeIndex::insertEntry(const void *key, const RecordId rid)
 	insert(key, rootPageNum, rid);
 }
 
-const void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
+void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 {
 	// is leaf?
 	int isLeaf;
@@ -240,7 +240,7 @@ const void BTreeIndex::insert(const void *key, const PageId pid, const RecordId 
 	bufMgr->unPinPage(file, pid, true);
 }
 
-const void BTreeIndex::leafSplitInsert(const void *key, const PageId pid, const RecordId rid)
+void BTreeIndex::leafSplitInsert(const void *key, const PageId pid, const RecordId rid)
 {
 	// the key value
 	int keyValue = *((int *)key);
@@ -320,7 +320,7 @@ const void BTreeIndex::leafSplitInsert(const void *key, const PageId pid, const 
 }
 
 // pid1 has 1 key. combine it with pid2
-const void BTreeIndex::combineNonleaf(const PageId pid1, const PageId pid2)
+void BTreeIndex::combineNonleaf(const PageId pid1, const PageId pid2)
 {
 	// page1 pointer
 	Page *page1;
@@ -564,7 +564,7 @@ const void BTreeIndex::startScan(const void *lowValParm,
 // BTreeIndex::isLeaf
 // -----------------------------------------------------------------------------
 
-const bool BTreeIndex::isLeaf(Page *page)
+bool BTreeIndex::isLeaf(Page *page)
 {
 	return *((int *)page) == -1;
 }
@@ -573,7 +573,7 @@ const bool BTreeIndex::isLeaf(Page *page)
 // BTreeIndex::setPageIdForScan
 // -----------------------------------------------------------------------------
 
-const void BTreeIndex::setPageIdForScan()
+void BTreeIndex::setPageIdForScan()
 {
 	bufMgr->readPage(file, currentPageNum, currentPageData);
 	if (isLeaf(currentPageData))
@@ -590,7 +590,7 @@ const void BTreeIndex::setPageIdForScan()
 // BTreeIndex::setNextEntry
 // -----------------------------------------------------------------------------
 
-const void BTreeIndex::setNextEntry()
+void BTreeIndex::setNextEntry()
 {
 	nextEntry++;
 	LeafNodeInt *node = (LeafNodeInt *)currentPageData;
@@ -605,7 +605,7 @@ const void BTreeIndex::setNextEntry()
 // BTreeIndex::findIndexNonLeaf
 // -----------------------------------------------------------------------------
 
-const int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
+int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 {
 	static auto comp = [](const PageId &p1, const PageId &p2) { return p1 > p2; };
 	PageId *start = node->pageNoArray;
@@ -618,7 +618,7 @@ const int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 // BTreeIndex::findArrayIndex
 // -----------------------------------------------------------------------------
 
-const int BTreeIndex::findArrayIndex(const int *arr, int len, int key,
+int BTreeIndex::findArrayIndex(const int *arr, int len, int key,
 									 bool includeKey)
 {
 	if (!includeKey)
@@ -631,7 +631,7 @@ const int BTreeIndex::findArrayIndex(const int *arr, int len, int key,
 // BTreeIndex::findScanIndexLeaf
 // -----------------------------------------------------------------------------
 
-const int BTreeIndex::findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey)
+int BTreeIndex::findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey)
 {
 	static auto comp = [](const RecordId &r1, const RecordId &r2) {
 		return r1.page_number > r2.page_number;
@@ -647,7 +647,7 @@ const int BTreeIndex::findScanIndexLeaf(LeafNodeInt *node, int key, bool include
 // BTreeIndex::setEntryIndexForScan
 // -----------------------------------------------------------------------------
 
-const void BTreeIndex::setEntryIndexForScan()
+void BTreeIndex::setEntryIndexForScan()
 {
 	LeafNodeInt *node = (LeafNodeInt *)currentPageData;
 	int entryIndex = findScanIndexLeaf(node, lowValInt, lowOp == GTE);
@@ -665,7 +665,7 @@ const void BTreeIndex::setEntryIndexForScan()
 // BTreeIndex::moveToNextPage
 // -----------------------------------------------------------------------------
 
-const void BTreeIndex::moveToNextPage(LeafNodeInt *node)
+void BTreeIndex::moveToNextPage(LeafNodeInt *node)
 {
 	bufMgr->unPinPage(file, currentPageNum, false);
 	currentPageNum = node->rightSibPageNo;
