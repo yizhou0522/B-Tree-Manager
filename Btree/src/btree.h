@@ -159,7 +159,7 @@ struct NonLeafNodeInt{
   /**
    * parent of the node.
    */
-	PageID parent;
+	PageId parent;
 
   /**
    * Stores keys.
@@ -190,7 +190,7 @@ struct LeafNodeInt{
   /**
    * parent of the node.
    */
-	PageID parent;
+	PageId parent;
 	
   /**
    * Stores keys.
@@ -326,14 +326,7 @@ class BTreeIndex {
   {
   };
 
-  void setPageIdForScan();
-  void setEntryIndexForScan();
-  void moveToNextPage();
-  void setNextEntry();
-  int findArrayIndex();
-  int findScanIndexLeaf();
-  bool isLeaf();
-  int findIndexNonLeaf();
+
  public:
 
   /**
@@ -409,9 +402,18 @@ class BTreeIndex {
 	
 	
 	
-	const PageID insert(const void * key, const PageID pid, const RecordID rid);
-	const void leafSplitInsert(const void * key, const PageID pid, const RecordID rid);
-	const void combineNonleaf(const PageID  pid1, const PageID pid2);
+	const void insert(const void * key, const PageId pid, const RecordId rid);
+	const void leafSplitInsert(const void * key, const PageId pid, const RecordId rid);
+	const void combineNonleaf(const PageId  pid1, const PageId pid2);
+	
+	const void setPageIdForScan();
+	const void setEntryIndexForScan();
+	const void moveToNextPage(LeafNodeInt *node);
+	const void setNextEntry();
+	const int findArrayIndex(const int *arr, int len, int key, bool includeKey);
+	const int findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey);
+	const bool isLeaf(Page *page);
+	const int findIndexNonLeaf(NonLeafNodeInt *node, int key);
 };
 
 }
