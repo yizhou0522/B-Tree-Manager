@@ -17,6 +17,7 @@
 #include "exceptions/end_of_file_exception.h"
 #include "exceptions/page_not_pinned_exception.h"
 
+using namespace std;
 //#define DEBUG
 
 namespace badgerdb
@@ -609,7 +610,7 @@ const int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 	static auto comp = [](const PageId &p1, const PageId &p2) { return p1 > p2; };
 	PageId *start = node->pageNoArray;
 	PageId *end = &node->pageNoArray[INTARRAYNONLEAFSIZE + 1];
-	int len = std::lower_bound(start, end, 0, comp) - start;
+	int len = lower_bound(start, end, 0, comp) - start;
 	int result = findArrayIndex(node->keyArray, len - 1, key, false);
 	return result == -1 ? len - 1 : result;
 }
@@ -622,7 +623,7 @@ const int BTreeIndex::findArrayIndex(const int *arr, int len, int key,
 {
 	if (!includeKey)
 		key++;
-	int result = std::lower_bound(arr, &arr[len], key) - arr;
+	int result = lower_bound(arr, &arr[len], key) - arr;
 	return result >= len ? -1 : result;
 }
 
@@ -639,7 +640,7 @@ const int BTreeIndex::findScanIndexLeaf(LeafNodeInt *node, int key, bool include
 
 	RecordId *start = node->ridArray;
 	RecordId *end = &node->ridArray[INTARRAYLEAFSIZE];
-	int temp = std::lower_bound(start, end, emptyRecord, comp) - start;
+	int temp = lower_bound(start, end, emptyRecord, comp) - start;
 	return findArrayIndex(node->keyArray, temp, key, includeKey);
 }
 // -----------------------------------------------------------------------------
