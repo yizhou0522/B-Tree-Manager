@@ -610,7 +610,7 @@ const int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 	PageId *start = node->pageNoArray;
 	PageId *end = &node->pageNoArray[INTARRAYNONLEAFSIZE + 1];
 	int len = std::lower_bound(start, end, 0, comp) - start;
-	int result = findArrayIndex(node->keyArray, len - 1, key);
+	int result = findArrayIndex(node->keyArray, len - 1, key, false);
 	return result == -1 ? len - 1 : result;
 }
 // -----------------------------------------------------------------------------
