@@ -162,13 +162,13 @@ int main(int argc, char **argv)
 	test4();
 	std::cout << "Finish Test Four" << std::endl;
 	test5();
-	std::cout << "Finish Test Six" << std::endl;
+	std::cout << "Finish Test Five" << std::endl;
 	test6();
-	std::cout << "Finish Test Eight" << std::endl;
+	std::cout << "Finish Test Six" << std::endl;
 	test7();
-	std::cout << "Finish Test Nine" << std::endl;
+	std::cout << "Finish Test Seven" << std::endl;
 	test8();
-	std::cout << "Finish Test Ten" << std::endl;
+	std::cout << "Finish Test Eight" << std::endl;
 	errorTests();
 	std::cout << "Finish Error Test" << std::endl;
 
