@@ -156,25 +156,25 @@ int main(int argc, char **argv)
 	File::remove(relationName);
 
 	test1();
-	//std::cout << "Finish Test One" << std::endl;
+	std::cout << "Finish Test One" << std::endl;
 	test2();
-	//std::cout << "Finish Test Two" << std::endl;
+	std::cout << "Finish Test Two" << std::endl;
 	test3();
-	//std::cout << "Finish Test Three" << std::endl;
+	std::cout << "Finish Test Three" << std::endl;
 	test4();
-	//std::cout << "Finish Test Four" << std::endl;
+	std::cout << "Finish Test Four" << std::endl;
 	test5();
-	//std::cout << "Finish Test Five" << std::endl;
+	std::cout << "Finish Test Five" << std::endl;
 	test6();
-	//std::cout << "Finish Test Six" << std::endl;
+	std::cout << "Finish Test Six" << std::endl;
 	test8();
-	//std::cout << "Finish Test Eight" << std::endl;
+	std::cout << "Finish Test Eight" << std::endl;
 	test9();
-	//std::cout << "Finish Test Nine" << std::endl;
+	std::cout << "Finish Test Nine" << std::endl;
 	test10();
-	//std::cout << "Finish Test Ten" << std::endl;
+	std::cout << "Finish Test Ten" << std::endl;
 	errorTests();
-	//std::cout << "Finish Error Test" << std::endl;
+	std::cout << "Finish Error Test" << std::endl;
 
   return 1;
 }
