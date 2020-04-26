@@ -553,7 +553,6 @@ const void BTreeIndex::startScan(const void *lowValParm,
 	Page *metaPage;
 	bufMgr->readPage(file, headerPageNum, metaPage);
 	IndexMetaInfo *metaInfo = (IndexMetaInfo *)metaPage;
-	
 	currentPageNum = metaInfo->rootPageNo;
 	bufMgr->unPinPage(file, headerPageNum, false);
 	setPageIdForScan();
