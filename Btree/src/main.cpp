@@ -225,20 +225,10 @@ void test5()
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for forward inserting with no split on root" << std::endl;
     forwardCreateRelationInSize(300);
-     test_type(6);
+     test_type(5);
     deleteRelation();
 }
 
-void test7()
-{
-    // Create a relation with tuples valued 0 to the given number
-    // There the given size make a very huge data
-    std::cout << "--------------------" << std::endl;
-    std::cout << "Test for huge data size" << std::endl;
-    forwardCreateRelationInSize(1000000);
-     test_type(7);
-    deleteRelation();
-}
 void test6()
 {
     // Create a relation with tuples valued in the given range
@@ -246,7 +236,7 @@ void test6()
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for forward inserting with given range" << std::endl;
     forwardCreateRelationInRange(-500, 500);
-     test_type(8);
+     test_type(7);  
     deleteRelation();
 }
 void test7()
@@ -255,7 +245,7 @@ void test7()
     std::cout << "--------------------" << std::endl;
     std::cout << "Test for backward inserting with given size" << std::endl;
     backwardCreateRelationInSize(300);
-     test_type(6);
+     test_type(5);
     deleteRelation();
 }
 void test8()
@@ -265,7 +255,7 @@ void test8()
     std::cout << "--------------------" << std::endl;
     std::cout << "test the root split "<< std::endl;
     forwardCreateRelationInSize(683);
-     test_type(9);
+     test_type(8);
     deleteRelation();
 }
 void  test_type(int num)
