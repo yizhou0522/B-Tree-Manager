@@ -553,6 +553,7 @@ const void BTreeIndex::startScan(const void *lowValParm,
 	Page *metaPage;
 	bufMgr->readPage(file, headerPageNum, metaPage);
 	IndexMetaInfo *metaInfo = (IndexMetaInfo *)metaPage;
+	
 	currentPageNum = metaInfo->rootPageNo;
 	bufMgr->unPinPage(file, headerPageNum, false);
 	setPageIdForScan();
@@ -601,7 +602,7 @@ void BTreeIndex::setNextEntry()
 {
 	nextEntry++;
 	LeafNodeInt *node = (LeafNodeInt *)currentPageData;
-	if (nextEntry >= INTARRAYLEAFSIZE ||
+	if (nextEntry >= node->key_count ||
 		node->ridArray[nextEntry].page_number == 0)
 	{
 		moveToNextPage(node);
@@ -738,6 +739,7 @@ const void BTreeIndex::scanNext(RecordId &outRid)
 		throw ScanNotInitializedException();
 
 	LeafNodeInt *node = (LeafNodeInt *)currentPageData;
+	
 	outRid = node->ridArray[nextEntry];
 	int val = node->keyArray[nextEntry];
 
