@@ -85,7 +85,7 @@ void test1();
 void test2();
 void test3();
 void test4();
-void test5();
+//void test5();
 void test6();
 void test7();
 void test8();
@@ -163,8 +163,6 @@ int main(int argc, char **argv)
 	std::cout << "Finish Test Three" << std::endl;
 	test4();
 	std::cout << "Finish Test Four" << std::endl;
-	test5();
-	std::cout << "Finish Test Five" << std::endl;
 	test6();
 	std::cout << "Finish Test Six" << std::endl;
 	test8();
@@ -219,17 +217,6 @@ void test4()
     std::cout << "Test for randomly inserting with given size"<< std::endl;
     randomlyCreateRelationInSize(10000);
      test_type(4);
-    deleteRelation();
-}
-
-void test5()
-{
-    // Create a relation with tuples valued 0 to the given number
-    // In this case, it will create an empty tree
-    std::cout << "--------------------" << std::endl;
-    std::cout << "Test for empty tree" << std::endl;
-    forwardCreateRelationInSize(0);
-     test_type(5);
     deleteRelation();
 }
 
@@ -293,9 +280,6 @@ void  test_type(int num)
             case 4:
                 test_size_10000();
                 break;
-            case 5:
-                test_empty_tree();
-                break;
             case 6:
                 test_no_split();
                 break;
@@ -336,20 +320,7 @@ void test_size_10000()
     checkPassFail(intScan(&index,300,GT,400,LT), 99)
     checkPassFail(intScan(&index,3000,GTE,4000,LT), 1000)
 }
-void test_empty_tree()
-{
-    // Test for an empty tree
-    std::cout << "-------- test_empty_tree --------" << std::endl;
-    BTreeIndex index(relationName, intIndexName, bufMgr, offsetof(tuple,i), INTEGER);
 
-    checkPassFail(intScan(&index,25,GT,40,LT), 0)
-    checkPassFail(intScan(&index,20,GTE,35,LTE), 0)
-    checkPassFail(intScan(&index,-3,GT,3,LT), 0)
-    checkPassFail(intScan(&index,996,GT,1001,LT), 0)
-    checkPassFail(intScan(&index,0,GT,1,LT), 0)
-    checkPassFail(intScan(&index,300,GT,400,LT), 0)
-    checkPassFail(intScan(&index,3000,GTE,4000,LT), 0)
-}
 void test_no_split()
 {
     // Test for a small given size, for which the root will not split
