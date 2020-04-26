@@ -85,12 +85,10 @@ void test1();
 void test2();
 void test3();
 void test4();
-//void test5();
+void test5();
 void test6();
 void test7();
 void test8();
-void test9();
-void test10();
 void errorTests();
 void deleteRelation();
 
@@ -163,13 +161,13 @@ int main(int argc, char **argv)
 	std::cout << "Finish Test Three" << std::endl;
 	test4();
 	std::cout << "Finish Test Four" << std::endl;
-	test6();
+	test5();
 	std::cout << "Finish Test Six" << std::endl;
-	test8();
+	test6();
 	std::cout << "Finish Test Eight" << std::endl;
-	test9();
+	test7();
 	std::cout << "Finish Test Nine" << std::endl;
-	test10();
+	test8();
 	std::cout << "Finish Test Ten" << std::endl;
 	errorTests();
 	std::cout << "Finish Error Test" << std::endl;
@@ -220,7 +218,7 @@ void test4()
     deleteRelation();
 }
 
-void test6()
+void test5()
 {
     // Create a relation with tuples valued 0 to the given number
     // In this case, root will be not split
@@ -241,7 +239,7 @@ void test7()
      test_type(7);
     deleteRelation();
 }
-void test8()
+void test6()
 {
     // Create a relation with tuples valued in the given range
     // In this case, there will be negative key values
@@ -251,7 +249,7 @@ void test8()
      test_type(8);
     deleteRelation();
 }
-void test9()
+void test7()
 {
     // Create a relation with tuples valued 0 to the given size in reverse order
     std::cout << "--------------------" << std::endl;
@@ -260,7 +258,7 @@ void test9()
      test_type(6);
     deleteRelation();
 }
-void test10()
+void test8()
 {
     // Create a relation with tuples valued 0 to the given size
     // In this case, the root just split
@@ -280,16 +278,16 @@ void  test_type(int num)
             case 4:
                 test_size_10000();
                 break;
-            case 6:
+            case 5:
                 test_no_split();
                 break;
-            case 7:
+            case 6:
                 test_huge_num();
                 break;
-            case 8:
+            case 7:
                 test_range();
                 break;
-            case 9:
+            case 8:
                 test_split();
                 break;
             default:
