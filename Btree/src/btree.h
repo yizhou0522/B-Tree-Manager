@@ -147,6 +147,11 @@ struct NonLeafNodeInt{
 	int isLeaf;
 
   /**
+   * protection1
+   */
+    int protection1[10];
+
+  /**
    * Level of the node in the tree.
    */
 	int level;
@@ -170,6 +175,11 @@ struct NonLeafNodeInt{
    * Stores page numbers of child pages which themselves are other non-leaf/leaf nodes in the tree.
    */
 	PageId pageNoArray[ INTARRAYNONLEAFSIZE + 1 ];
+	
+  /**
+   * protection2
+   */
+    int protection2[10];
 };
 
 
@@ -181,6 +191,11 @@ struct LeafNodeInt{
    * is leaf?
    */
 	int isLeaf;
+	
+  /**
+   * protection1
+   */
+    int protection1[10];
 
   /**
    * number of keys in the node.
@@ -207,6 +222,11 @@ struct LeafNodeInt{
    * Stores RecordIds.
    */
 	RecordId ridArray[ INTARRAYLEAFSIZE ];
+	
+  /**
+   * protection2
+   */
+    int protection2[10];
 };
 
 
