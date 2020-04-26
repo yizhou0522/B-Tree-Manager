@@ -188,16 +188,22 @@ void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 			// location found within the range of existing keys
 			bool placeFound = false;
 			int i;
+			// location
+			int index;
 			for (i = 0; i < node->key_count; i++)
 			{
 				if (keyValue < node->keyArray[i])
 				{
 					placeFound = true;
-					insert(key, node->pageNoArray[i], rid);
+					index = i;
 					break;
 				}
 			}
-			if (placeFound == false)
+			if (placeFound == true)
+			{
+				insert(key, node->pageNoArray[index], rid);
+			}
+			else
 			{
 				insert(key, node->pageNoArray[node->key_count], rid);
 			}
@@ -366,7 +372,7 @@ void BTreeIndex::combineNonleaf(const PageId pid1, const PageId pid2)
 			// child2 of node1
 			Page *child2;
 			bufMgr->readPage(file, node1->pageNoArray[1], child2);
-			LeafNodeInt *rightChild = (LeafNodeInt *)page2;
+			LeafNodeInt *rightChild = (LeafNodeInt *)child2;
 			leftChild->parent = pid2;
 			rightChild->parent = pid2;
 			bufMgr->unPinPage(file, node1->pageNoArray[0], true);
@@ -381,7 +387,7 @@ void BTreeIndex::combineNonleaf(const PageId pid1, const PageId pid2)
 			// child2 of node1
 			Page *child2;
 			bufMgr->readPage(file, node1->pageNoArray[1], child2);
-			NonLeafNodeInt *rightChild = (NonLeafNodeInt *)page2;
+			NonLeafNodeInt *rightChild = (NonLeafNodeInt *)child2;
 			leftChild->parent = pid2;
 			rightChild->parent = pid2;
 			bufMgr->unPinPage(file, node1->pageNoArray[0], true);
@@ -631,7 +637,7 @@ int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 	}
 	if (found == false)
 	{
-		retVal = -1;
+		retVal = node->key_count;
 	}
 	return retVal;
 }
