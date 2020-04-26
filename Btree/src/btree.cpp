@@ -168,7 +168,6 @@ void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 			leftLeaf->ridArray[0] = rid;
 			leftLeaf->key_count = 1;
 			leftLeaf->parent = pid;
-			leftLeaf->rightSibPageNo = rightId;
 
 			rightLeaf->isLeaf = 1;
 			rightLeaf->key_count = 0;
@@ -179,6 +178,7 @@ void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 			node->pageNoArray[1] = rightId;
 			node->level = 1;
 			node->key_count++;
+			leftLeaf->rightSibPageNo = rightId;
 
 			bufMgr->unPinPage(file, leftId, true);
 			bufMgr->unPinPage(file, rightId, true);
@@ -199,6 +199,7 @@ void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 					break;
 				}
 			}
+			
 			if (placeFound == true)
 			{
 				insert(key, node->pageNoArray[index], rid);
@@ -207,11 +208,11 @@ void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 			{
 				insert(key, node->pageNoArray[node->key_count], rid);
 			}
-		}
+		} 
 	}
 
 	else if (isLeaf == 1)
-	{
+	{		
 		LeafNodeInt *node = (LeafNodeInt *)page;
 		if (node->key_count < INTARRAYLEAFSIZE)
 		{

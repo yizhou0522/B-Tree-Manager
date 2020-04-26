@@ -193,6 +193,12 @@ struct LeafNodeInt{
 	PageId parent;
 	
   /**
+   * Page number of the leaf on the right side.
+	 * This linking of leaves allows to easily move from one leaf to the next leaf during index scan.
+   */
+	PageId rightSibPageNo;
+	
+  /**
    * Stores keys.
    */
 	int keyArray[ INTARRAYLEAFSIZE ];
@@ -201,12 +207,6 @@ struct LeafNodeInt{
    * Stores RecordIds.
    */
 	RecordId ridArray[ INTARRAYLEAFSIZE ];
-
-  /**
-   * Page number of the leaf on the right side.
-	 * This linking of leaves allows to easily move from one leaf to the next leaf during index scan.
-   */
-	PageId rightSibPageNo;
 };
 
 
