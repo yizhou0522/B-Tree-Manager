@@ -321,11 +321,6 @@ class BTreeIndex {
    */
 	Operator	highOp;
 
-	// FOR SCAN
-  struct IndexMetaInfo indexMetaInfo
-  {
-  };
-
 
 	void insert(const void * key, const PageId pid, const RecordId rid);
 	void leafSplitInsert(const void * key, const PageId pid, const RecordId rid);
@@ -335,8 +330,8 @@ class BTreeIndex {
 	void setEntryIndexForScan();
 	void moveToNextPage(LeafNodeInt *node);
 	void setNextEntry();
-	int findArrayIndex(const int *arr, int len, int key, bool includeKey);
-	int findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey);
+//	int findArrayIndex(const int *arr, int len, int key, bool includeKey);
+//	int findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey);
 	bool isLeaf(Page *page);
 	int findIndexNonLeaf(NonLeafNodeInt *node, int key);	
 
