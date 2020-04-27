@@ -18,7 +18,6 @@
 #include "exceptions/page_not_pinned_exception.h"
 
 using namespace std;
-//#define DEBUG
 
 namespace badgerdb
 {
@@ -110,7 +109,8 @@ BTreeIndex::BTreeIndex(const std::string &relationName,
 
 BTreeIndex::~BTreeIndex()
 {
-	if (scanExecuting) endScan();
+	if (scanExecuting)
+		endScan();
 
 	bufMgr->flushFile(file);
 	delete file;
@@ -191,7 +191,7 @@ void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 					break;
 				}
 			}
-			
+
 			if (placeFound == true)
 			{
 				insert(key, node->pageNoArray[index], rid);
@@ -200,11 +200,11 @@ void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 			{
 				insert(key, node->pageNoArray[node->key_count], rid);
 			}
-		} 
+		}
 	}
 
 	else if (isLeaf == 1)
-	{		
+	{
 		LeafNodeInt *node = (LeafNodeInt *)page;
 		if (node->key_count < INTARRAYLEAFSIZE)
 		{
@@ -318,7 +318,9 @@ void BTreeIndex::leafSplitInsert(const void *key, const PageId pid, const Record
 	bufMgr->unPinPage(file, newNonleafID, true);
 }
 
-// pid1 has 1 key. combine it with pid2
+/** 
+ * pid1 has 1 key. combine it with pid2
+ */
 void BTreeIndex::combineNonleaf(const PageId pid1, const PageId pid2)
 {
 	// page1 pointer
@@ -565,6 +567,9 @@ const void BTreeIndex::startScan(const void *lowValParm,
 // BTreeIndex::isLeaf
 // -----------------------------------------------------------------------------
 
+/**
+ * check if this node is a leaf node
+ */
 bool BTreeIndex::isLeaf(Page *page)
 {
 	return *((int *)page) == 1;
@@ -574,6 +579,10 @@ bool BTreeIndex::isLeaf(Page *page)
 // BTreeIndex::setPageIdForScan
 // -----------------------------------------------------------------------------
 
+/**
+ * Recursively find the page id of the first element larger than or equal to the
+ * lower bound given.
+ */
 void BTreeIndex::setPageIdForScan()
 {
 	bufMgr->readPage(file, currentPageNum, currentPageData);
@@ -589,6 +598,10 @@ void BTreeIndex::setPageIdForScan()
 // BTreeIndex::setNextEntry
 // -----------------------------------------------------------------------------
 
+/**
+ * scan for the next entry. 
+ * if reaches the last element in this page, set the current scanning page to the next page.
+ */
 void BTreeIndex::setNextEntry()
 {
 	nextEntry++;
@@ -604,16 +617,11 @@ void BTreeIndex::setNextEntry()
 // BTreeIndex::findIndexNonLeaf
 // -----------------------------------------------------------------------------
 
+/**
+ *	Find the index of the first key smaller than the given key
+ */
 int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 {
-/*	static auto comp = [](const PageId &p1, const PageId &p2) { return p1 > p2; };
-	PageId *start = node->pageNoArray;
-	PageId *end = &node->pageNoArray[INTARRAYNONLEAFSIZE + 1];
-	int len = lower_bound(start, end, 0, comp) - start;
-	int len = node->key_count;
-	int result = findArrayIndex(node->keyArray, len - 1, key, false);
-	return result == -1 ? len - 1 : result;
-*/
 	int i;
 	// the value to be returned
 	int retVal;
@@ -634,38 +642,7 @@ int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 	}
 	return retVal;
 }
-// -----------------------------------------------------------------------------
-// BTreeIndex::findArrayIndex
-// -----------------------------------------------------------------------------
 
-/*
-int BTreeIndex::findArrayIndex(const int *arr, int len, int key,
-									 bool includeKey)
-{
-	if (!includeKey)
-		key++;
-	int result = lower_bound(arr, &arr[len], key) - arr;
-	return result >= len ? -1 : result;
-}
-*/
-
-// -----------------------------------------------------------------------------
-// BTreeIndex::findScanIndexLeaf
-// -----------------------------------------------------------------------------
-/*
-int BTreeIndex::findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey)
-{
-	static auto comp = [](const RecordId &r1, const RecordId &r2) {
-		return r1.page_number > r2.page_number;
-	};
-	static RecordId emptyRecord{};
-
-	RecordId *start = node->ridArray;
-	RecordId *end = &node->ridArray[INTARRAYLEAFSIZE];
-	int temp = lower_bound(start, end, emptyRecord, comp) - start;
-	return findArrayIndex(node->keyArray, temp, key, includeKey);
-}
-*/
 // -----------------------------------------------------------------------------
 // BTreeIndex::setEntryIndexForScan
 // -----------------------------------------------------------------------------
@@ -673,7 +650,7 @@ int BTreeIndex::findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey)
 void BTreeIndex::setEntryIndexForScan()
 {
 	LeafNodeInt *node = (LeafNodeInt *)currentPageData;
-//	int entryIndex = findScanIndexLeaf(node, lowValInt, lowOp == GTE);
+	//	int entryIndex = findScanIndexLeaf(node, lowValInt, lowOp == GTE);
 	int entryIndex;
 	int i;
 	// found?
@@ -697,7 +674,7 @@ void BTreeIndex::setEntryIndexForScan()
 	{
 		entryIndex = -1;
 	}
-	
+
 	if (entryIndex == -1)
 	{
 		moveToNextPage(node);
@@ -730,10 +707,11 @@ const void BTreeIndex::scanNext(RecordId &outRid)
 		throw ScanNotInitializedException();
 
 	LeafNodeInt *node = (LeafNodeInt *)currentPageData;
-	
+
 	outRid = node->ridArray[nextEntry];
 	int val = node->keyArray[nextEntry];
 
+	// if current record ID is empty or value is out of range or value reaches the higher end
 	if ((outRid.page_number == 0 &&
 		 outRid.slot_number == 0) ||
 		val > highValInt ||
