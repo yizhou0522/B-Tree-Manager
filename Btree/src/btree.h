@@ -342,16 +342,40 @@ class BTreeIndex {
 	Operator	highOp;
 
 
+  /**
+   * insert
+	 * The actual insert method that inserts an record and its rid. It searches from the node indicated by
+	 * pid and add the leaf to the correct place.
+   *
+   * @param key        the key value to insert.
+   * @param pid        the page for insertion.
+   * @param rid			the id of the record
+   */
 	void insert(const void * key, const PageId pid, const RecordId rid);
+
+  /**
+   * leafSplitInsert
+	 * The method that split a full leaf node and inserts a new record
+   *
+   * @param key        the key value to insert.
+   * @param pid        the page for insertion.
+   * @param rid			the id of the record
+   */
 	void leafSplitInsert(const void * key, const PageId pid, const RecordId rid);
+	
+  /**
+   * combineNonleaf
+	 * The method that combines two non-leaf nodes. It is assumed that page 1 contains only 1 key and page 2 is not full
+   *
+   * @param pid1        the pid of page1, with only 1 key
+   * @param pid2		the pid of page2, not full
+   */	
 	void combineNonleaf(const PageId  pid1, const PageId pid2);
 	
 	void setPageIdForScan();
 	void setEntryIndexForScan();
 	void moveToNextPage(LeafNodeInt *node);
 	void setNextEntry();
-//	int findArrayIndex(const int *arr, int len, int key, bool includeKey);
-//	int findScanIndexLeaf(LeafNodeInt *node, int key, bool includeKey);
 	bool isLeaf(Page *page);
 	int findIndexNonLeaf(NonLeafNodeInt *node, int key);	
 

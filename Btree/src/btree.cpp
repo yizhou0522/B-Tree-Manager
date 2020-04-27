@@ -125,6 +125,10 @@ const void BTreeIndex::insertEntry(const void *key, const RecordId rid)
 	insert(key, rootPageNum, rid);
 }
 
+// -----------------------------------------------------------------------------
+// BTreeIndex::insert
+// -----------------------------------------------------------------------------
+
 void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 {
 	// is leaf?
@@ -239,6 +243,11 @@ void BTreeIndex::insert(const void *key, const PageId pid, const RecordId rid)
 	bufMgr->unPinPage(file, pid, true);
 }
 
+
+// -----------------------------------------------------------------------------
+// BTreeIndex::leafSplitInsert
+// -----------------------------------------------------------------------------
+
 void BTreeIndex::leafSplitInsert(const void *key, const PageId pid, const RecordId rid)
 {
 	// the key value
@@ -318,9 +327,10 @@ void BTreeIndex::leafSplitInsert(const void *key, const PageId pid, const Record
 	bufMgr->unPinPage(file, newNonleafID, true);
 }
 
-/** 
- * pid1 has 1 key. combine it with pid2
- */
+// -----------------------------------------------------------------------------
+// BTreeIndex::combineNonleaf
+// -----------------------------------------------------------------------------
+
 void BTreeIndex::combineNonleaf(const PageId pid1, const PageId pid2)
 {
 	// page1 pointer
