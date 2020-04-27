@@ -647,10 +647,12 @@ int BTreeIndex::findIndexNonLeaf(NonLeafNodeInt *node, int key)
 // BTreeIndex::setEntryIndexForScan
 // -----------------------------------------------------------------------------
 
+/**
+ * Find the first element in the currently scanning page
+ */
 void BTreeIndex::setEntryIndexForScan()
 {
 	LeafNodeInt *node = (LeafNodeInt *)currentPageData;
-	//	int entryIndex = findScanIndexLeaf(node, lowValInt, lowOp == GTE);
 	int entryIndex;
 	int i;
 	// found?
@@ -725,7 +727,7 @@ const void BTreeIndex::scanNext(RecordId &outRid)
 // -----------------------------------------------------------------------------
 // BTreeIndex::endScan
 // -----------------------------------------------------------------------------
-//
+
 const void BTreeIndex::endScan()
 {
 	if (!scanExecuting)
