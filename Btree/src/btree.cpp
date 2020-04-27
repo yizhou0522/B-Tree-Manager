@@ -110,15 +110,7 @@ BTreeIndex::BTreeIndex(const std::string &relationName,
 
 BTreeIndex::~BTreeIndex()
 {
-	scanExecuting = false;
-
-	try
-	{
-		bufMgr->unPinPage(file, currentPageNum, false);
-	}
-	catch (PageNotPinnedException &e)
-	{
-	}
+	if (scanExecuting) endScan();
 
 	bufMgr->flushFile(file);
 	delete file;
